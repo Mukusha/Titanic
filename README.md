@@ -1,4 +1,4 @@
-# Titanic  ![progress](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=11.1&leftFill=%23FF0000 "progress")
+# Titanic  ![progress](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=20&leftFill=%23FF0000 "progress")
 ### _Тестовое задание_
 [Текст задания](https://sites.google.com/iteratia.com/java-test-titanic/).
 
