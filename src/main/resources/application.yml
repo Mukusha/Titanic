@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: titanic
+  # SQL
+  datasource:
+    url: jdbc:postgresql://localhost/titanic
+    username: postgres
+    password: 12345
+
+  jpa:
+    generate-ddl: true
+    # show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
