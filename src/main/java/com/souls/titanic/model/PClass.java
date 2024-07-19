@@ -1,10 +1,10 @@
 package com.souls.titanic.model;
 
-public enum Pclass {
+public enum PClass {
     FIRST,
     SECOND,
     THIRD;
 
-    Pclass() {
+    PClass() {
     }
 }
