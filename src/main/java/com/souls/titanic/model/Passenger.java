@@ -9,27 +9,27 @@ public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Boolean Survived;
+    private Boolean survived;
     @Enumerated(EnumType.STRING)
-    private PClass PClass;
-    private String Name;
-    private String Sex;
-    private String Age;
-    private String SiblingsAndSpouses;
-    private String ParentsAndChildren;
-    private String Fare;
+    private PClass pClass;
+    private String name;
+    private String sex;
+    private String age;
+    private String siblingsAndSpouses;
+    private String parentsAndChildren;
+    private String fare;
 
     public Passenger() {}
 
-    public Passenger(Boolean survived, com.souls.titanic.model.PClass PClass, String name, String sex, String age, String siblingsAndSpouses, String parentsAndChildren, String fare) {
-        this.Survived = survived;
-        this.PClass = PClass;
-        this.Name = name;
-        this.Sex = sex;
-        this.Age = age;
-        this.SiblingsAndSpouses = siblingsAndSpouses;
-        this.ParentsAndChildren = parentsAndChildren;
-        this.Fare = fare;
+    public Passenger(Boolean survived,PClass pClass, String name, String sex, String age, String siblingsAndSpouses, String parentsAndChildren, String fare) {
+        this.survived = survived;
+        this.pClass = pClass;
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+        this.siblingsAndSpouses = siblingsAndSpouses;
+        this.parentsAndChildren = parentsAndChildren;
+        this.fare = fare;
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.souls.titanic.service;
 
 import com.souls.titanic.model.Passenger;
 import com.souls.titanic.model.PClass;
+import com.souls.titanic.model.SettingWebPage;
 import com.souls.titanic.repo.PassengerRepo;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,9 +17,11 @@ import java.io.IOException;
 @Service
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepo passengerRepo;
+    private final SettingWebPage settingWebPage;
 
-    public PassengerServiceImpl(PassengerRepo passengerRepo) {
+    public PassengerServiceImpl(PassengerRepo passengerRepo, SettingWebPage settingWebPage) {
         this.passengerRepo = passengerRepo;
+        this.settingWebPage = settingWebPage;
     }
 
     /**
@@ -24,6 +29,11 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Value("${fileName}")
     private String fileName;
+
+    @Override
+    public Page<Passenger>  getAllPassengers() {
+        return passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage-1,settingWebPage.numberPassengersOnPage));
+    }
 
     @Override
     public Boolean conversionSvgToSql() {
@@ -46,4 +56,6 @@ public class PassengerServiceImpl implements PassengerService {
 
         return true;
     }
+
+
 }

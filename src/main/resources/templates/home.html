@@ -48,13 +48,13 @@
                     <input type="text" class="form-control" id="inputPassword2" placeholder="Имя">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Поиск</button>
+                    <button type="submit" class="btn btn-primary mb-3" >Поиск</button>
                 </div>
             </form>
         </div>
 
     </div>
-
+    <form th:action="@{/}" th:method="get"  >
     <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
         <div class="form-check">
@@ -66,7 +66,7 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
             <label class="form-check-label" for="flexCheckChecked1">
-                показать всех совершеннолетих пассажирова (страше 16 лет)
+                показать всех совершеннолетих пассажиров (страше 16 лет)
             </label>
         </div>
         <div class="form-check">
@@ -101,19 +101,20 @@
                 <label for="numberPassengers" class="col-form-label">Пассажиров на странице: </label>
             </div>
             <div class="col-1 ">
-                <input type="text" id="numberPassengers" class="form-control text-center" placeholder="50">
+                <input type="text" name  = "numberPassengersOnPage" id="numberPassengers" class="form-control text-center"  th:value="${numberPassengersOnPage}" >
             </div>
         </div>
 
         </br>
-        <button type="button" class="btn btn-primary">Применить</button>
+        <button type="submit"  class="btn btn-primary">Применить</button>
     </div>
 
     </br>
-    <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2">
+    <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 ">
         <table class="table table-striped">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>Выжил</th>
                 <th>Класс пассажира</th>
                 <th>Имя</th>
@@ -125,45 +126,48 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>0</td>
-                <td>3</td>
-                <td>Mr. Owen Harris Braund</td>
-                <td>male</td>
-                <td>22</td>
-                <td>1</td>
-                <td>0</td>
-                <td>7.25</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>Mrs. John Bradley (Florence Briggs Thayer) Cumings</td>
-                <td>female</td>
-                <td>38</td>
-                <td>1</td>
-                <td>0</td>
-                <td>71.2833</td>
-            </tr>
+            <div th:each = "passenger : ${passengers}">
+                <tr>
+                    <td th:text="${passenger.id}"></td>
+                    <td th:text="${passenger.survived}"></td>
+                    <td th:text="${passenger.pClass}"></td>
+                    <td th:text="${passenger.name}"></td>
+                    <td th:text="${passenger.sex}"></td>
+                    <td th:text="${passenger.age}"></td>
+                    <td th:text="${passenger.siblingsAndSpouses}"></td>
+                    <td th:text="${passenger.parentsAndChildren}"></td>
+                    <td th:text="${passenger.fare}"></td>
+                </tr>
+            </div>
             </tbody>
         </table>
 
         <nav aria-label="...">
             <ul class="pagination  pagination-sm justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Предыдущая</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Следующая</a>
+                    <a th:href="@{/(numberPage=1, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link" >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li  class="page-item " th:classappend="${numberPage==1 ? 'disabled':''}">
+                    <a  th:href="@{/(numberPage=${numberPage-1}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link">&lt;</a>
+                </li>
+                <li class="page-item input-group-sm">
+                    <input type="text" name  = "numberPage" class="form-control text-center"  th:value="${numberPage}" >
+                </li>
+                <li class="page-item " th:classappend="${numberPage==maxPage ? 'disabled':''}">
+                    <a th:href="@{/(numberPage=${numberPage+1}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link" >
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+                <li  class="page-item ">
+                    <a  th:href="@{/(numberPage=${maxPage}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link">&raquo;</a>
                 </li>
             </ul>
+
         </nav>
     </div>
+    </form>
 </div>
 </br>
 
