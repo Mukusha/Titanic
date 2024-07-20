@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class SettingWebPage {
     public int numberPassengersOnPage = 50;
     public int numberPage = 1;
+    public int sort=0;
 
     @Override
     public String toString() {

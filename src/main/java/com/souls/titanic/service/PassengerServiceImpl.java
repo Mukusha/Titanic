@@ -32,8 +32,24 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Page<Passenger>  getAllPassengers() {
-        return passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage-1,settingWebPage.numberPassengersOnPage));
-    }
+        // в зависимости от типа сортировки возвращаем страницы с пассажирами
+        return switch (settingWebPage.sort) {
+            case (1) ->
+                    passengerRepo.findAllByOrderByNameAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case (2) ->
+                    passengerRepo.findAllByOrderByNameDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case (3) ->
+                    passengerRepo.findAllByOrderByAgeAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case (4) ->
+                    passengerRepo.findAllByOrderByAgeDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case (5) ->
+                    passengerRepo.findAllByOrderByFareAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case (6) ->
+                    passengerRepo.findAllByOrderByFareDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            default ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+        };
+         }
 
     @Override
     public Boolean conversionSvgToSql() {
@@ -45,8 +61,9 @@ public class PassengerServiceImpl implements PassengerService {
                 date = line.split(",");
                 Passenger passenger = new Passenger(date[0].equals("1"),
                         PClass.values()[Integer.parseInt(date[1]) - 1],
-                        date[2], date[3], date[4],
-                        date[5], date[6], date[7]);
+                        date[2], date[3], Double.parseDouble(date[4]),
+                        Integer.parseInt(date[5]), Integer.parseInt(date[6]),
+                        Double.parseDouble(date[7]));
                 passengerRepo.save(passenger);
             }
         } catch (IOException e) {

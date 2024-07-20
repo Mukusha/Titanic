@@ -84,13 +84,14 @@
         </div>
         </br>
         <div class="col-3">
-            <select class="form-select " aria-label="Имя по возрастанию">
-                <option selected>Имя по возрастанию</option>
-                <option value="1">Возраст по возрастанию</option>
-                <option value="2">Оплата по возрастанию</option>
-                <option value="1">Имя по убыванию</option>
-                <option value="2">Возраст по убыванию</option>
-                <option value="3">Оплата по убыванию</option>
+            <select class="form-select " aria-label="Имя по возрастанию" name="sort">
+                <option value="0" th:selected="${sort==0}">По умолчанию</option>
+                <option value="1" th:selected="${sort==1}">Имя по возрастанию</option>
+                <option value="2" th:selected="${sort==2}">Имя по убыванию</option>
+                <option value="3" th:selected="${sort==3}">Возраст по возрастанию</option>
+                <option value="4" th:selected="${sort==4}">Возраст по убыванию</option>
+                <option value="5" th:selected="${sort==5}">Оплата по возрастанию</option>
+                <option value="6" th:selected="${sort==6}">Оплата по убыванию</option>
             </select>
         </div>
 
@@ -134,8 +135,8 @@
                     <td th:text="${passenger.name}"></td>
                     <td th:text="${passenger.sex}"></td>
                     <td th:text="${passenger.age}"></td>
-                    <td th:text="${passenger.siblingsAndSpouses}"></td>
-                    <td th:text="${passenger.parentsAndChildren}"></td>
+                    <td th:text="${passenger.siblingsOrSpousesAboard}"></td>
+                    <td th:text="${passenger.parentsOrChildrenAboard}"></td>
                     <td th:text="${passenger.fare}"></td>
                 </tr>
             </div>
@@ -145,23 +146,23 @@
         <nav aria-label="...">
             <ul class="pagination  pagination-sm justify-content-center">
                 <li class="page-item">
-                    <a th:href="@{/(numberPage=1, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link" >
+                    <a th:href="@{/(numberPage=1, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link" >
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li  class="page-item " th:classappend="${numberPage==1 ? 'disabled':''}">
-                    <a  th:href="@{/(numberPage=${numberPage-1}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link">&lt;</a>
+                    <a  th:href="@{/(numberPage=${numberPage-1}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link">&lt;</a>
                 </li>
                 <li class="page-item input-group-sm">
                     <input type="text" name  = "numberPage" class="form-control text-center"  th:value="${numberPage}" >
                 </li>
                 <li class="page-item " th:classappend="${numberPage==maxPage ? 'disabled':''}">
-                    <a th:href="@{/(numberPage=${numberPage+1}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link" >
+                    <a th:href="@{/(numberPage=${numberPage+1}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link" >
                         <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>
                 <li  class="page-item ">
-                    <a  th:href="@{/(numberPage=${maxPage}, numberPassengersOnPage=${numberPassengersOnPage})}" class="page-link">&raquo;</a>
+                    <a  th:href="@{/(numberPage=${maxPage}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link">&raquo;</a>
                 </li>
             </ul>
 
