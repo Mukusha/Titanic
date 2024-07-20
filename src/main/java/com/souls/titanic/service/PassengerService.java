@@ -19,4 +19,10 @@ public interface PassengerService {
      * Постранично возвращает список всех пассажиров в зависимости от настроек (класс SettingWebPage)
      * */
      Page<Passenger> getAllPassengers();
+
+    /**
+     * Постранично возвращает список всех пассажиров в имени которых встречается подстрока в зависимости от настроек (класс SettingWebPage)
+     * @param  substring подстрока
+     * */
+    Page<Passenger> searchPassengerByName(String substring);
 }

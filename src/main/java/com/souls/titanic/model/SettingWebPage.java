@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 public class SettingWebPage {
     public int numberPassengersOnPage = 50;
     public int numberPage = 1;
-    public int sort=0;
+    public String sort = "default";
+    public String searchName = "";
 
     @Override
     public String toString() {

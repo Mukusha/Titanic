@@ -45,7 +45,7 @@
         <div class="p-2 ms-auto">
             <form class="row g-3">
                 <div class="col-auto">
-                    <input type="text" class="form-control" id="inputPassword2" placeholder="Имя">
+                    <input type="text" class="form-control" id="inputPassword2" placeholder="Имя" name="searchName" th:value="${searchName}">
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary mb-3" >Поиск</button>
@@ -85,13 +85,13 @@
         </br>
         <div class="col-3">
             <select class="form-select " aria-label="Имя по возрастанию" name="sort">
-                <option value="0" th:selected="${sort==0}">По умолчанию</option>
-                <option value="1" th:selected="${sort==1}">Имя по возрастанию</option>
-                <option value="2" th:selected="${sort==2}">Имя по убыванию</option>
-                <option value="3" th:selected="${sort==3}">Возраст по возрастанию</option>
-                <option value="4" th:selected="${sort==4}">Возраст по убыванию</option>
-                <option value="5" th:selected="${sort==5}">Оплата по возрастанию</option>
-                <option value="6" th:selected="${sort==6}">Оплата по убыванию</option>
+                <option value=" " th:selected="${sort=='default'}">По умолчанию</option>
+                <option value="NameAsc" th:selected="${sort=='NameAsc'}">Имя по возрастанию</option>
+                <option value="NameDesc" th:selected="${sort=='NameDesc'}">Имя по убыванию</option>
+                <option value="AgeAsc" th:selected="${sort=='AgeAsc'}">Возраст по возрастанию</option>
+                <option value="AgeDesc" th:selected="${sort=='AgeDesc'}">Возраст по убыванию</option>
+                <option value="FareAsc" th:selected="${sort=='FareAsc'}">Оплата по возрастанию</option>
+                <option value="FareDesc" th:selected="${sort=='FareDesc'}">Оплата по убыванию</option>
             </select>
         </div>
 

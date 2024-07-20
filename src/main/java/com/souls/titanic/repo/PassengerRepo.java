@@ -11,11 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PassengerRepo extends JpaRepository<Passenger,Long> {
     Page<Passenger> findAll(Pageable pageable);
+    Page<Passenger>  findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    Page<Passenger> findAllByOrderByNameAsc(Pageable pageable);
-    Page<Passenger> findAllByOrderByNameDesc(Pageable pageable);
-    Page<Passenger> findAllByOrderByAgeAsc(Pageable pageable);
-    Page<Passenger> findAllByOrderByAgeDesc(Pageable pageable);
-    Page<Passenger> findAllByOrderByFareAsc(Pageable pageable);
-    Page<Passenger> findAllByOrderByFareDesc(Pageable pageable);
 }

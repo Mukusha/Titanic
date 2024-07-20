@@ -8,6 +8,7 @@ import com.souls.titanic.repo.PassengerRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -34,22 +35,29 @@ public class PassengerServiceImpl implements PassengerService {
     public Page<Passenger>  getAllPassengers() {
         // в зависимости от типа сортировки возвращаем страницы с пассажирами
         return switch (settingWebPage.sort) {
-            case (1) ->
-                    passengerRepo.findAllByOrderByNameAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-            case (2) ->
-                    passengerRepo.findAllByOrderByNameDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-            case (3) ->
-                    passengerRepo.findAllByOrderByAgeAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-            case (4) ->
-                    passengerRepo.findAllByOrderByAgeDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-            case (5) ->
-                    passengerRepo.findAllByOrderByFareAsc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-            case (6) ->
-                    passengerRepo.findAllByOrderByFareDesc(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+            case ("NameAsc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("name")));
+            case ("NameDesc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("name").descending()));
+            case ("AgeAsc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("age")));
+            case ("AgeDesc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("age").descending()));
+            case ("FareAsc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("fare")));
+            case ("FareDesc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("fare").descending()));
             default ->
                     passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
         };
          }
+
+    @Override
+    public Page<Passenger> searchPassengerByName(String substring) {
+        // в зависимости от типа сортировки возвращаем страницы с пассажирами
+        return passengerRepo.findByNameContainingIgnoreCase(substring,PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage,Sort.by("name")));
+
+    }
 
     @Override
     public Boolean conversionSvgToSql() {
