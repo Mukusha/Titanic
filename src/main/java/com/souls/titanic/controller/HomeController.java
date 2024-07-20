@@ -25,7 +25,7 @@ public class HomeController {
     public String home(@RequestParam(defaultValue = "50") int numberPassengersOnPage,
                        @RequestParam(defaultValue = "1") int numberPage,
                        @RequestParam(defaultValue = "default") String sort,
-                      // @RequestParam(required=false) String searchName,
+                       @RequestParam(required=false) String searchName,
                        Model model) {
 
         //если поменялось кол-во отображаемых пассажиров, то сохраняем настройки и переходим на первую страницу
@@ -35,11 +35,14 @@ public class HomeController {
             settingWebPage.setNumberPassengersOnPage(numberPassengersOnPage);
             settingWebPage.setSort(sort);
         }
+        //поиск
+        if ((searchName != null) && (searchName != "") && (searchName != settingWebPage.getSearchName())){
+            numberPage = 1;
+            settingWebPage.setSearchName(searchName);
+        }
+
         //сохраняем номер страницы
         settingWebPage.setNumberPage(numberPage);
-
-    //    System.out.println("================= "+sort+"f="+searchName);
-
 
         Page<Passenger> pagesPassenger = passengerService.getAllPassengers();
 

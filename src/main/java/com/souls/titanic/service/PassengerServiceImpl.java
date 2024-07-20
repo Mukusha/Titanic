@@ -34,22 +34,15 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public Page<Passenger>  getAllPassengers() {
         // в зависимости от типа сортировки возвращаем страницы с пассажирами
-        return switch (settingWebPage.sort) {
-            case ("NameAsc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("name")));
-            case ("NameDesc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("name").descending()));
-            case ("AgeAsc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("age")));
-            case ("AgeDesc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("age").descending()));
-            case ("FareAsc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("fare")));
-            case ("FareDesc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by("fare").descending()));
-            default ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
-        };
+        String[] dateSort = settingWebPage.sort.split(" ");
+        switch (dateSort[0]){
+            case ("asc"):
+              return   passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by(dateSort[1])));
+            case("desc"):
+              return   passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by(dateSort[1]).descending()));
+            default:
+                return passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+        }
          }
 
     @Override

@@ -86,12 +86,12 @@
         <div class="col-3">
             <select class="form-select " aria-label="Имя по возрастанию" name="sort">
                 <option value=" " th:selected="${sort=='default'}">По умолчанию</option>
-                <option value="NameAsc" th:selected="${sort=='NameAsc'}">Имя по возрастанию</option>
-                <option value="NameDesc" th:selected="${sort=='NameDesc'}">Имя по убыванию</option>
-                <option value="AgeAsc" th:selected="${sort=='AgeAsc'}">Возраст по возрастанию</option>
-                <option value="AgeDesc" th:selected="${sort=='AgeDesc'}">Возраст по убыванию</option>
-                <option value="FareAsc" th:selected="${sort=='FareAsc'}">Оплата по возрастанию</option>
-                <option value="FareDesc" th:selected="${sort=='FareDesc'}">Оплата по убыванию</option>
+                <option value="asc name" th:selected="${sort=='asc name'}">Имя по возрастанию</option>
+                <option value="desc name" th:selected="${sort=='desc name'}">Имя по убыванию</option>
+                <option value="asc age" th:selected="${sort=='asc age'}">Возраст по возрастанию</option>
+                <option value="desc age" th:selected="${sort=='desc age'}">Возраст по убыванию</option>
+                <option value="asc fare" th:selected="${sort=='asc fare'}">Оплата по возрастанию</option>
+                <option value="desc fare" th:selected="${sort=='desc fare'}">Оплата по убыванию</option>
             </select>
         </div>
 

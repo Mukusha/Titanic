@@ -11,7 +11,7 @@ public class SettingWebPage {
     public int numberPassengersOnPage = 50;
     public int numberPage = 1;
     public String sort = "default";
-    public String searchName = "";
+    public String searchName = null;
 
     @Override
     public String toString() {
