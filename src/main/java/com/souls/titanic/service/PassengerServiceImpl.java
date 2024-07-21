@@ -32,29 +32,50 @@ public class PassengerServiceImpl implements PassengerService {
     private String fileName;
 
     @Override
-    public Page<Passenger>  getAllPassengers() {
-        // в зависимости от типа сортировки возвращаем страницы с пассажирами
-        String[] dateSort = settingWebPage.sort.split(" ");
-        switch (dateSort[0]){
-            case ("asc"):
-              return   passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by(dateSort[1])));
-            case("desc"):
-              return   passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage, Sort.by(dateSort[1]).descending()));
-            default:
-                return passengerRepo.findAll(PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage));
+    public Page<Passenger> getPagePassenger() {
+
+        if(settingWebPage.getSearchName() == null){
+            //если поиск
+            return getAllPassengers();
+        }else{
+            //если фильтруем все данные
+            return searchPassengerByName(settingWebPage.getSearchName());
         }
-         }
+    }
+
+    @Override
+    public Page<Passenger> getAllPassengers() {
+        // в зависимости от типа сортировки возвращаем страницы с пассажирами
+        String[] dateSort = settingWebPage.getSort().split(" ");
+        return switch (dateSort[0]) {
+            case ("asc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1])));
+            case ("desc") ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]).descending()));
+            default ->
+                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage()));
+        };
+    }
 
     @Override
     public Page<Passenger> searchPassengerByName(String substring) {
         // в зависимости от типа сортировки возвращаем страницы с пассажирами
-        return passengerRepo.findByNameContainingIgnoreCase(substring,PageRequest.of(settingWebPage.numberPage - 1, settingWebPage.numberPassengersOnPage,Sort.by("name")));
-
+        String[] dateSort = settingWebPage.getSort().split(" ");
+        return switch (dateSort[0]) {
+            case ("asc") ->
+                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1])));
+            case ("desc") ->
+                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]).descending()));
+            default ->
+                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage()));
+        };
     }
+
+
 
     @Override
     public Boolean conversionSvgToSql() {
-        try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             String[] date;
             br.readLine(); // пропуск строки с названием столбцов

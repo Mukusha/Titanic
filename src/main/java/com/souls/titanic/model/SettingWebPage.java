@@ -8,16 +8,28 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class SettingWebPage {
-    public int numberPassengersOnPage = 50;
-    public int numberPage = 1;
-    public String sort = "default";
-    public String searchName = null;
+    private int numberPassengersOnPage = 50;
+    private int numberPage = 1;
+    private String sort = "default ";
+    private String searchName = null;
+    private int maxPage = 18;
+
+    public void defaultSettingWebPage() {
+        this.numberPassengersOnPage = 50;
+        this.numberPage = 1;
+        this.sort = "default ";
+        this.searchName = null;
+        this.maxPage = 18;
+    }
 
     @Override
     public String toString() {
         return "SettingWebPage{" +
                 "numberPassengersOnPage=" + numberPassengersOnPage +
                 ", numberPage=" + numberPage +
+                ", sort='" + sort + '\'' +
+                ", searchName='" + searchName + '\'' +
+                ", maxPage=" + maxPage +
                 '}';
     }
 }

@@ -36,6 +36,7 @@
 </br>
 </br>
 </br>
+<form th:action="@{/}" th:method="get" >
 
 <div class="container" id="passengerList">
     <div class="hstack gap-3">
@@ -45,16 +46,16 @@
         <div class="p-2 ms-auto">
             <form class="row g-3">
                 <div class="col-auto">
-                    <input type="text" class="form-control" id="inputPassword2" placeholder="Имя" name="searchName" th:value="${searchName}">
+                    <input type="text" class="form-control" id="inputPassword2" placeholder="Имя" name="searchName" th:value="${settingWebPage.searchName}">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3" >Поиск</button>
+                    <button type="submit" class="btn btn-primary mb-3"  name="action" value="searchName">Поиск</button>
                 </div>
             </form>
         </div>
 
     </div>
-    <form th:action="@{/}" th:method="get"  >
+
     <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
         <div class="form-check">
@@ -85,13 +86,13 @@
         </br>
         <div class="col-3">
             <select class="form-select " aria-label="Имя по возрастанию" name="sort">
-                <option value=" " th:selected="${sort=='default'}">По умолчанию</option>
-                <option value="asc name" th:selected="${sort=='asc name'}">Имя по возрастанию</option>
-                <option value="desc name" th:selected="${sort=='desc name'}">Имя по убыванию</option>
-                <option value="asc age" th:selected="${sort=='asc age'}">Возраст по возрастанию</option>
-                <option value="desc age" th:selected="${sort=='desc age'}">Возраст по убыванию</option>
-                <option value="asc fare" th:selected="${sort=='asc fare'}">Оплата по возрастанию</option>
-                <option value="desc fare" th:selected="${sort=='desc fare'}">Оплата по убыванию</option>
+                <option value="default" th:selected="${settingWebPage.sort=='default'}">По умолчанию</option>
+                <option value="asc name" th:selected="${settingWebPage.sort=='asc name'}">Имя по возрастанию</option>
+                <option value="desc name" th:selected="${settingWebPage.sort=='desc name'}">Имя по убыванию</option>
+                <option value="asc age" th:selected="${settingWebPage.sort=='asc age'}">Возраст по возрастанию</option>
+                <option value="desc age" th:selected="${settingWebPage.sort=='desc age'}">Возраст по убыванию</option>
+                <option value="asc fare" th:selected="${settingWebPage.sort=='asc fare'}">Оплата по возрастанию</option>
+                <option value="desc fare" th:selected="${settingWebPage.sort=='desc fare'}">Оплата по убыванию</option>
             </select>
         </div>
 
@@ -102,12 +103,12 @@
                 <label for="numberPassengers" class="col-form-label">Пассажиров на странице: </label>
             </div>
             <div class="col-1 ">
-                <input type="text" name  = "numberPassengersOnPage" id="numberPassengers" class="form-control text-center"  th:value="${numberPassengersOnPage}" >
+                <input type="text" name  = "numberPassengersOnPage" id="numberPassengers" class="form-control text-center"  th:value="${settingWebPage.numberPassengersOnPage}" >
             </div>
         </div>
 
         </br>
-        <button type="submit"  class="btn btn-primary">Применить</button>
+        <button type="submit"  class="btn btn-primary" name="action" value="filter">Применить</button>
     </div>
 
     </br>
@@ -146,32 +147,28 @@
         <nav aria-label="...">
             <ul class="pagination  pagination-sm justify-content-center">
                 <li class="page-item">
-                    <a th:href="@{/(numberPage=1, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link" >
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
+                    <button type="submit" class="page-link form-control text-center" name="action" value="firstPage"><span aria-hidden="true">&laquo;</span></button>
                 </li>
-                <li  class="page-item " th:classappend="${numberPage==1 ? 'disabled':''}">
-                    <a  th:href="@{/(numberPage=${numberPage-1}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link">&lt;</a>
+                <li  class="page-item " th:classappend="${settingWebPage.numberPage==1 ? 'disabled':''}">
+                    <button type="submit" class="page-link" name="action" value="previousPage"><span aria-hidden="true">&lt;</span></button>
                 </li>
                 <li class="page-item input-group-sm">
-                    <input type="text" name  = "numberPage" class="form-control text-center"  th:value="${numberPage}" >
+                    <input type="text" name  = "numberPage" class="form-control text-center"  th:value="${settingWebPage.numberPage}" >
                 </li>
-                <li class="page-item " th:classappend="${numberPage==maxPage ? 'disabled':''}">
-                    <a th:href="@{/(numberPage=${numberPage+1}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link" >
-                        <span aria-hidden="true">&gt;</span>
-                    </a>
+                <li class="page-item " th:classappend="${settingWebPage.numberPage==maxPage ? 'disabled':''}">
+                    <button type="submit" class="page-link" name="action" value="nextPage"><span aria-hidden="true">&gt;</span></button>
                 </li>
                 <li  class="page-item ">
-                    <a  th:href="@{/(numberPage=${maxPage}, numberPassengersOnPage=${numberPassengersOnPage}, sort=${sort})}" class="page-link">&raquo;</a>
+                    <button type="submit" class="page-link" name="action" value="lastPage"><span aria-hidden="true">&raquo;</span></button>
                 </li>
             </ul>
 
         </nav>
     </div>
-    </form>
+
 </div>
 </br>
-
+</form>
 <div class="container " id="statistica">
 
     <h2>Статистика:</h2>

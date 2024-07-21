@@ -18,39 +18,56 @@ public class HomeController {
     public HomeController(PassengerService passengerService, SettingWebPage settingWebPage) {
         this.passengerService = passengerService;
         this.settingWebPage = settingWebPage;
-     //   passengerService.conversionSvgToSql();
+        //   passengerService.conversionSvgToSql();
     }
 
     @GetMapping
-    public String home(@RequestParam(defaultValue = "50") int numberPassengersOnPage,
+    public String home(@RequestParam(value = "action", required = false) String action,
+                       @RequestParam(defaultValue = "50") int numberPassengersOnPage,
                        @RequestParam(defaultValue = "1") int numberPage,
-                       @RequestParam(defaultValue = "default") String sort,
-                       @RequestParam(required=false) String searchName,
+                       @RequestParam(defaultValue = "default ") String sort,
+                       @RequestParam(required = false) String searchName,
                        Model model) {
 
-        //если поменялось кол-во отображаемых пассажиров, то сохраняем настройки и переходим на первую страницу
-        if (numberPassengersOnPage != settingWebPage.getNumberPassengersOnPage() ||
-                !sort.equals(settingWebPage.getSort())) {
-            numberPage = 1;
-            settingWebPage.setNumberPassengersOnPage(numberPassengersOnPage);
-            settingWebPage.setSort(sort);
-        }
-        //поиск
-        if ((searchName != null) && (searchName != "") && (searchName != settingWebPage.getSearchName())){
-            numberPage = 1;
-            settingWebPage.setSearchName(searchName);
+        //если введен номер определенной страницы
+        if (numberPage != settingWebPage.getNumberPage()) {
+            action = null;
+            if (numberPage > settingWebPage.getMaxPage()) {
+                numberPage = settingWebPage.getMaxPage();
+            }
+            if (numberPage < 1) {
+                numberPage = 1;
+            }
         }
 
-        //сохраняем номер страницы
+        if (action != null) {
+            switch (action) {
+                //пагинация
+                case ("firstPage") -> numberPage = 1;
+                case ("previousPage") -> numberPage--;
+                case ("nextPage") -> numberPage++;
+                case ("lastPage") -> numberPage = settingWebPage.getMaxPage();
+                // нажат поиск
+                case ("searchName") -> {
+                    settingWebPage.defaultSettingWebPage();
+                    numberPage = 1;
+                }
+                //нажато применить
+                case ("filter") -> {
+                    settingWebPage.setSort(sort);
+                    settingWebPage.setNumberPassengersOnPage(numberPassengersOnPage);
+                    numberPage = 1;
+                }
+            }
+        }
+
         settingWebPage.setNumberPage(numberPage);
+        settingWebPage.setSearchName(searchName);
+        Page<Passenger> pagesPassenger = passengerService.getPagePassenger();
+        settingWebPage.setMaxPage(pagesPassenger.getTotalPages());
 
-        Page<Passenger> pagesPassenger = passengerService.getAllPassengers();
-
-        model.addAttribute("numberPassengersOnPage", settingWebPage.getNumberPassengersOnPage());
         model.addAttribute("passengers", pagesPassenger);
-        model.addAttribute("numberPage", numberPage);
-        model.addAttribute("maxPage", pagesPassenger.getTotalPages());
-        model.addAttribute("sort", sort);
+        model.addAttribute("settingWebPage", settingWebPage);
         return "home";
     }
 }
