@@ -1,25 +1,37 @@
 package com.souls.titanic.model;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Класс в котором хранятся параметры страницы
+ */
 @Getter
-@Setter
 @Component
 public class SettingWebPage {
-    private int numberPassengersOnPage = 50;
-    private int numberPage = 1;
-    private String sort = "default ";
-    private String searchName = null;
+    private int numberPassengersOnPage;
+    private int numberPage;
+    private String sort;
+    private String searchName;
     private int maxPage = 18;
+    private String showSurvivesPassengers;
+    private String showAdultPassengers;
+    private String showMalePassengers;
+    private String showWithoutRelatives;
 
-    public void defaultSettingWebPage() {
-        this.numberPassengersOnPage = 50;
-        this.numberPage = 1;
-        this.sort = "default ";
-        this.searchName = null;
-        this.maxPage = 18;
+    public void setMaxPage(int maxPage) {
+        this.maxPage = maxPage;
+    }
+
+    public void setParameters(String searchName, int numberPassengersOnPage, int numberPage, String sort, String showSurvivesPassengers, String showAdultPassengers, String showMalePassengers, String showWithoutRelatives) {
+        this.numberPassengersOnPage = numberPassengersOnPage;
+        this.numberPage = numberPage;
+        this.sort = sort;
+        this.searchName = searchName;
+        this.showSurvivesPassengers = showSurvivesPassengers;
+        this.showAdultPassengers = showAdultPassengers;
+        this.showMalePassengers = showMalePassengers;
+        this.showWithoutRelatives = showWithoutRelatives;
     }
 
     @Override
@@ -30,6 +42,10 @@ public class SettingWebPage {
                 ", sort='" + sort + '\'' +
                 ", searchName='" + searchName + '\'' +
                 ", maxPage=" + maxPage +
+                ", showSurvivesPassengers='" + showSurvivesPassengers + '\'' +
+                ", showAdultPassengers='" + showAdultPassengers + '\'' +
+                ", showMalePassengers='" + showMalePassengers + '\'' +
+                ", showWithoutRelatives='" + showWithoutRelatives + '\'' +
                 '}';
     }
 }

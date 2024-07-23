@@ -36,138 +36,143 @@
 </br>
 </br>
 </br>
-<form th:action="@{/}" th:method="get" >
+<form th:action="@{/}" th:method="get">
 
-<div class="container" id="passengerList">
-    <div class="hstack gap-3">
-        <div class="p-2">
-            <h2>Список пассажиров:</h2></div>
-
-        <div class="p-2 ms-auto">
-            <form class="row g-3">
-                <div class="col-auto">
-                    <input type="text" class="form-control" id="inputPassword2" placeholder="Имя" name="searchName" th:value="${settingWebPage.searchName}">
+    <div class="container" id="passengerList">
+        <div class="row p-2">
+            <div class="stack gap-3 col-md-8">
+                <div class="p-2">
+                    <h2>Список пассажиров:</h2></div>
+            </div>
+            <div class="p-2  col-md-4 d-flex justify-content-end">
+                <div class="row ml-0 mr-0">
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="Имя" name="searchName" th:value="${settingWebPage.searchName}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mb-3" name="action" value="searchName">Поиск</button>
+                    </div>
                 </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3"  name="action" value="searchName">Поиск</button>
-                </div>
-            </form>
+            </div>
+
         </div>
 
-    </div>
+        <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
-    <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
-
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                показать всех выживших пассажиров.
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
-            <label class="form-check-label" for="flexCheckChecked1">
-                показать всех совершеннолетих пассажиров (страше 16 лет)
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
-            <label class="form-check-label" for="flexCheckChecked2">
-                показать всех пассажиров мужского пола
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
-            <label class="form-check-label" for="flexCheckChecked3">
-                показать всех пассажиров кто не имеет родственников.
-            </label>
+            <div class="form-check">
+                <input name="showSurvivesPassengers" th:checked="${settingWebPage.showSurvivesPassengers}" class="form-check-input" type="checkbox" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    показать всех выживших пассажиров.
+                </label>
+            </div>
+            <div class="form-check">
+                <input name="showAdultPassengers" th:checked="${settingWebPage.showAdultPassengers}" class="form-check-input" type="checkbox" id="flexCheckChecked1">
+                <label class="form-check-label" for="flexCheckChecked1">
+                    показать всех совершеннолетих пассажиров (страше 16 лет)
+                </label>
+            </div>
+            <div class="form-check">
+                <input name="showMalePassengers" th:checked="${settingWebPage.showMalePassengers}" class="form-check-input" type="checkbox" id="flexCheckChecked2">
+                <label class="form-check-label" for="flexCheckChecked2">
+                    показать всех пассажиров мужского пола
+                </label>
+            </div>
+            <div class="form-check">
+                <input name="showWithoutRelatives" th:checked="${settingWebPage.showWithoutRelatives}" class="form-check-input" type="checkbox" id="flexCheckChecked3">
+                <label class="form-check-label" for="flexCheckChecked3">
+                    показать всех пассажиров кто не имеет родственников.
+                </label>
+                </br>
+            </div>
             </br>
-        </div>
-        </br>
-        <div class="col-3">
-            <select class="form-select " aria-label="Имя по возрастанию" name="sort">
-                <option value="default" th:selected="${settingWebPage.sort=='default'}">По умолчанию</option>
-                <option value="asc name" th:selected="${settingWebPage.sort=='asc name'}">Имя по возрастанию</option>
-                <option value="desc name" th:selected="${settingWebPage.sort=='desc name'}">Имя по убыванию</option>
-                <option value="asc age" th:selected="${settingWebPage.sort=='asc age'}">Возраст по возрастанию</option>
-                <option value="desc age" th:selected="${settingWebPage.sort=='desc age'}">Возраст по убыванию</option>
-                <option value="asc fare" th:selected="${settingWebPage.sort=='asc fare'}">Оплата по возрастанию</option>
-                <option value="desc fare" th:selected="${settingWebPage.sort=='desc fare'}">Оплата по убыванию</option>
-            </select>
-        </div>
-
-        </br>
-
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="numberPassengers" class="col-form-label">Пассажиров на странице: </label>
+            <div class="col-3">
+                <select class="form-select " aria-label="Имя по возрастанию" name="sort">
+                    <option value="default" th:selected="${settingWebPage.sort=='default'}">По умолчанию</option>
+                    <option value="asc name" th:selected="${settingWebPage.sort=='asc name'}">Имя по возрастанию</option>
+                    <option value="desc name" th:selected="${settingWebPage.sort=='desc name'}">Имя по убыванию</option>
+                    <option value="asc age" th:selected="${settingWebPage.sort=='asc age'}">Возраст по возрастанию</option>
+                    <option value="desc age" th:selected="${settingWebPage.sort=='desc age'}">Возраст по убыванию</option>
+                    <option value="asc fare" th:selected="${settingWebPage.sort=='asc fare'}">Оплата по возрастанию</option>
+                    <option value="desc fare" th:selected="${settingWebPage.sort=='desc fare'}">Оплата по убыванию</option>
+                </select>
             </div>
-            <div class="col-1 ">
-                <input type="text" name  = "numberPassengersOnPage" id="numberPassengers" class="form-control text-center"  th:value="${settingWebPage.numberPassengersOnPage}" >
+
+            </br>
+
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="numberPassengers" class="col-form-label">Пассажиров на странице: </label>
+                </div>
+                <div class="col-1 ">
+                    <input type="text" name="numberPassengersOnPage" id="numberPassengers" class="form-control text-center" th:value="${settingWebPage.numberPassengersOnPage}">
+                </div>
             </div>
+
+            </br>
+            <button type="submit" class="btn btn-primary" name="action" value="filter">Применить</button>
         </div>
 
         </br>
-        <button type="submit"  class="btn btn-primary" name="action" value="filter">Применить</button>
-    </div>
-
-    </br>
-    <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 ">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Выжил</th>
-                <th>Класс пассажира</th>
-                <th>Имя</th>
-                <th>Пол</th>
-                <th>Возраст</th>
-                <th>Братья, сестры/супруги на борту</th>
-                <th>Родители/Дети на борту</th>
-                <th>Стоимость проезда</th>
-            </tr>
-            </thead>
-            <tbody>
-            <div th:each = "passenger : ${passengers}">
-                <tr>
-                    <td th:text="${passenger.id}"></td>
-                    <td th:text="${passenger.survived}"></td>
-                    <td th:text="${passenger.pClass}"></td>
-                    <td th:text="${passenger.name}"></td>
-                    <td th:text="${passenger.sex}"></td>
-                    <td th:text="${passenger.age}"></td>
-                    <td th:text="${passenger.siblingsOrSpousesAboard}"></td>
-                    <td th:text="${passenger.parentsOrChildrenAboard}"></td>
-                    <td th:text="${passenger.fare}"></td>
+        <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 ">
+            <table class="table table-striped">
+                <thead>
+                <tr class="text-center" >
+                    <th>ID</th>
+                    <th>Статус</th>
+                    <th>Класс пассажира</th>
+                    <th>Имя</th>
+                    <th>Пол</th>
+                    <th>Возраст</th>
+                    <th>Братья, сестры/супруги на борту</th>
+                    <th>Родители/Дети на борту</th>
+                    <th>Стоимость проезда</th>
                 </tr>
-            </div>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <div th:each="passenger : ${passengers}">
+                    <tr>
+                        <td th:text="${passenger.id}"></td>
+                        <td class="text-center" th:text="${passenger.survived}?выжил:погиб"></td>
+                        <td class="text-center" th:switch="${passenger.pClass.name()}">
+                            <span th:case="FIRST">I</span>
+                            <span th:case="SECOND" >II</span>
+                            <span th:case="THIRD" >III</span>
+                        </td>
+                        <td class="text-left" th:text="${passenger.name}"></td>
+                        <td class="text-center" th:text="${passenger.sex=='male'}?М:Ж"></td>
+                        <td class="text-center" th:text="${passenger.age}"></td>
+                        <td class="text-center" th:text="${passenger.siblingsOrSpousesAboard}"></td>
+                        <td class="text-center" th:text="${passenger.parentsOrChildrenAboard}"></td>
+                        <td th:text="'&nbsp;  &nbsp; &nbsp; &nbsp;'+${passenger.fare}"></td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
 
-        <nav aria-label="...">
-            <ul class="pagination  pagination-sm justify-content-center">
-                <li class="page-item">
-                    <button type="submit" class="page-link form-control text-center" name="action" value="firstPage"><span aria-hidden="true">&laquo;</span></button>
-                </li>
-                <li  class="page-item " th:classappend="${settingWebPage.numberPage==1 ? 'disabled':''}">
-                    <button type="submit" class="page-link" name="action" value="previousPage"><span aria-hidden="true">&lt;</span></button>
-                </li>
-                <li class="page-item input-group-sm">
-                    <input type="text" name  = "numberPage" class="form-control text-center"  th:value="${settingWebPage.numberPage}" >
-                </li>
-                <li class="page-item " th:classappend="${settingWebPage.numberPage==maxPage ? 'disabled':''}">
-                    <button type="submit" class="page-link" name="action" value="nextPage"><span aria-hidden="true">&gt;</span></button>
-                </li>
-                <li  class="page-item ">
-                    <button type="submit" class="page-link" name="action" value="lastPage"><span aria-hidden="true">&raquo;</span></button>
-                </li>
-            </ul>
+            <nav aria-label="...">
+                <ul class="pagination  pagination-sm justify-content-center">
+                    <li class="page-item">
+                        <button type="submit" class="page-link form-control text-center" name="action" value="firstPage"><span aria-hidden="true">&laquo;</span></button>
+                    </li>
+                    <li class="page-item " th:classappend="${settingWebPage.numberPage==1 ? 'disabled':''}">
+                        <button type="submit" class="page-link" name="action" value="previousPage"><span aria-hidden="true">&lt;</span></button>
+                    </li>
+                    <li class="page-item input-group-sm">
+                        <input type="text" name="numberPage" class="form-control text-center" th:value="${settingWebPage.numberPage}">
+                    </li>
+                    <li class="page-item " th:classappend="${settingWebPage.numberPage==settingWebPage.maxPage ? 'disabled':''}">
+                        <button type="submit" class="page-link" name="action" value="nextPage"><span aria-hidden="true">&gt;</span></button>
+                    </li>
+                    <li class="page-item ">
+                        <button type="submit" class="page-link" name="action" value="lastPage"><span aria-hidden="true">&raquo;</span></button>
+                    </li>
+                </ul>
 
-        </nav>
+            </nav>
+        </div>
+
     </div>
-
-</div>
-</br>
+    </br>
 </form>
 <div class="container " id="statistica">
 

@@ -8,6 +8,7 @@ import com.souls.titanic.repo.PassengerRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -33,44 +34,28 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Page<Passenger> getPagePassenger() {
+        // В зависимости от типа сортировки возвращаем страницы с пассажирами
+        // dateSort приходит с web в формате "<<тип сортировки>> <<параметр>>".
+        // Если захочу добавить новую сортировку, мне надо просто на странице добавить еще кнопку со значением в таком формате
+        String[] dateSort = settingWebPage.getSort().split(" ");
 
-        if(settingWebPage.getSearchName() == null){
-            //если поиск
-            return getAllPassengers();
-        }else{
-            //если фильтруем все данные
-            return searchPassengerByName(settingWebPage.getSearchName());
+        int numberPage = settingWebPage.getNumberPage() - 1;
+
+        Pageable pageable;
+
+        switch (dateSort[0]) {
+            //сортировка по возрастанию
+            case ("asc") ->
+                    pageable = PageRequest.of(numberPage, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]));
+            //сортировка по убыванию
+            case ("desc") ->
+                    pageable = PageRequest.of(numberPage, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]).descending());
+            // по умолчанию (по id)
+            default -> pageable = PageRequest.of(numberPage, settingWebPage.getNumberPassengersOnPage());
         }
-    }
 
-    @Override
-    public Page<Passenger> getAllPassengers() {
-        // в зависимости от типа сортировки возвращаем страницы с пассажирами
-        String[] dateSort = settingWebPage.getSort().split(" ");
-        return switch (dateSort[0]) {
-            case ("asc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1])));
-            case ("desc") ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]).descending()));
-            default ->
-                    passengerRepo.findAll(PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage()));
-        };
+        return passengerRepo.findByNameSort(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null, pageable);
     }
-
-    @Override
-    public Page<Passenger> searchPassengerByName(String substring) {
-        // в зависимости от типа сортировки возвращаем страницы с пассажирами
-        String[] dateSort = settingWebPage.getSort().split(" ");
-        return switch (dateSort[0]) {
-            case ("asc") ->
-                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1])));
-            case ("desc") ->
-                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage(), Sort.by(dateSort[1]).descending()));
-            default ->
-                    passengerRepo.findByNameContainingIgnoreCase(substring, PageRequest.of(settingWebPage.getNumberPage() - 1, settingWebPage.getNumberPassengersOnPage()));
-        };
-    }
-
 
 
     @Override

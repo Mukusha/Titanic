@@ -9,7 +9,7 @@ spring:
 
   jpa:
     generate-ddl: true
-    # show-sql: true
+    #show-sql: true #просмотр сгенерированных запросов
     properties:
       hibernate:
         jdbc:
@@ -17,3 +17,4 @@ spring:
             non_contextual_creation: true
 
 fileName: titanic.csv
+

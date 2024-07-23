@@ -27,6 +27,10 @@ public class HomeController {
                        @RequestParam(defaultValue = "1") int numberPage,
                        @RequestParam(defaultValue = "default ") String sort,
                        @RequestParam(required = false) String searchName,
+                       @RequestParam(required = false) String showSurvivesPassengers,
+                       @RequestParam(required = false) String showAdultPassengers,
+                       @RequestParam(required = false) String showMalePassengers,
+                       @RequestParam(required = false) String showWithoutRelatives,
                        Model model) {
 
         //если введен номер определенной страницы
@@ -40,6 +44,7 @@ public class HomeController {
             }
         }
 
+        //обработчик кнопок
         if (action != null) {
             switch (action) {
                 //пагинация
@@ -48,22 +53,16 @@ public class HomeController {
                 case ("nextPage") -> numberPage++;
                 case ("lastPage") -> numberPage = settingWebPage.getMaxPage();
                 // нажат поиск
-                case ("searchName") -> {
-                    settingWebPage.defaultSettingWebPage();
-                    numberPage = 1;
-                }
+                case ("searchName") -> numberPage = 1;
                 //нажато применить
-                case ("filter") -> {
-                    settingWebPage.setSort(sort);
-                    settingWebPage.setNumberPassengersOnPage(numberPassengersOnPage);
-                    numberPage = 1;
-                }
+                case ("filter") -> numberPage = 1;
             }
         }
 
-        settingWebPage.setNumberPage(numberPage);
-        settingWebPage.setSearchName(searchName);
+        settingWebPage.setParameters(searchName, numberPassengersOnPage, numberPage, sort, showSurvivesPassengers, showAdultPassengers, showMalePassengers, showWithoutRelatives);
+
         Page<Passenger> pagesPassenger = passengerService.getPagePassenger();
+
         settingWebPage.setMaxPage(pagesPassenger.getTotalPages());
 
         model.addAttribute("passengers", pagesPassenger);
