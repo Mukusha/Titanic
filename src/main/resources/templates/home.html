@@ -38,7 +38,7 @@
 </br>
 <form th:action="@{/}" th:method="get">
 
-    <div class="container" id="passengerList">
+    <div class="container" >
         <div class="row p-2">
             <div class="stack gap-3 col-md-8">
                 <div class="p-2">
@@ -113,7 +113,7 @@
         </div>
 
         </br>
-        <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 ">
+        <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 " id="passengerList">
             <table class="table table-striped">
                 <thead>
                 <tr class="text-center" >
@@ -180,9 +180,9 @@
 
     <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
-        <p class="fw-semibold">Общая сумма оплаты проезда:</p>
-        <p class="fw-semibold">Количество выживших на борту:</p>
-        <p class="fw-semibold">Количество людей имеющих родственников на борту:</p>
+        <span class="fw-semibold">Общая сумма оплаты проезда: &nbsp;  </span><span  th:text="${statistic.sumFare}"></span></br></br>
+        <span class="fw-semibold">Количество выживших на борту: &nbsp; </span> <span  th:text="${statistic.countSurvivors}"></span></br></br>
+        <span class="fw-semibold">Количество людей имеющих родственников на борту: &nbsp;</span><span  th:text="${statistic.countPassengersWithRelatives}"></span>
 
     </div>
 </div>

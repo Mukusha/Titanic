@@ -1,8 +1,9 @@
 package com.souls.titanic.controller;
 
 import com.souls.titanic.model.Passenger;
-import com.souls.titanic.model.SettingWebPage;
+import com.souls.titanic.service.SettingWebPage;
 import com.souls.titanic.service.PassengerService;
+import com.souls.titanic.service.Statistic;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +15,13 @@ public class HomeController {
 
     private final PassengerService passengerService;
     private final SettingWebPage settingWebPage;
+    private final Statistic statistic;
 
-    public HomeController(PassengerService passengerService, SettingWebPage settingWebPage) {
+    public HomeController(PassengerService passengerService, SettingWebPage settingWebPage, Statistic statistic) {
         this.passengerService = passengerService;
         this.settingWebPage = settingWebPage;
         //   passengerService.conversionSvgToSql();
+        this.statistic = statistic;
     }
 
     @GetMapping
@@ -67,6 +70,7 @@ public class HomeController {
 
         model.addAttribute("passengers", pagesPassenger);
         model.addAttribute("settingWebPage", settingWebPage);
+        model.addAttribute("statistic", passengerService.getStatistic());
         return "home";
     }
 }

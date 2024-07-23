@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class Passenger {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Boolean survived;
     @Enumerated(EnumType.STRING)

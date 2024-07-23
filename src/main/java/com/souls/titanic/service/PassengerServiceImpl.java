@@ -2,7 +2,6 @@ package com.souls.titanic.service;
 
 import com.souls.titanic.model.Passenger;
 import com.souls.titanic.model.PClass;
-import com.souls.titanic.model.SettingWebPage;
 import com.souls.titanic.repo.PassengerRepo;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +54,21 @@ public class PassengerServiceImpl implements PassengerService {
         }
 
         return passengerRepo.findByNameSort(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null, pageable);
+    }
+
+    @Override
+    public Statistic getStatistic() {
+        Statistic statistic = new Statistic();
+        statistic.setSumFare(passengerRepo.sumFare(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
+
+        statistic.setCountSurvivors(passengerRepo.countSurvivors(settingWebPage.getSearchName(),settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
+
+        if (settingWebPage.getShowWithoutRelatives() != null) {
+            statistic.setCountPassengersWithRelatives(0);
+        } else {
+            statistic.setCountPassengersWithRelatives(passengerRepo.countPassengersWithRelatives(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null));
+        }
+        return statistic;
     }
 
 

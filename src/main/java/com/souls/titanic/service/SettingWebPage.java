@@ -1,6 +1,7 @@
-package com.souls.titanic.model;
+package com.souls.titanic.service;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,15 +14,12 @@ public class SettingWebPage {
     private int numberPage;
     private String sort;
     private String searchName;
+    @Setter
     private int maxPage = 18;
     private String showSurvivesPassengers;
     private String showAdultPassengers;
     private String showMalePassengers;
     private String showWithoutRelatives;
-
-    public void setMaxPage(int maxPage) {
-        this.maxPage = maxPage;
-    }
 
     public void setParameters(String searchName, int numberPassengersOnPage, int numberPage, String sort, String showSurvivesPassengers, String showAdultPassengers, String showMalePassengers, String showWithoutRelatives) {
         this.numberPassengersOnPage = numberPassengersOnPage;

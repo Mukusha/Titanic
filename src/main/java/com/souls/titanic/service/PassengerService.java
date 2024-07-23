@@ -14,6 +14,11 @@ public interface PassengerService {
     Page<Passenger> getPagePassenger();
 
     /**
+     * Возвращает статистику в зависимости от настроек (класс SettingWebPage)
+     */
+    Statistic getStatistic();
+
+    /**
      * Считывает данные из файла и записывает данные в БД
      *
      * @return выполнилась ли операция
