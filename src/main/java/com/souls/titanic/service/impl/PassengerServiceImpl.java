@@ -1,9 +1,13 @@
-package com.souls.titanic.service;
+package com.souls.titanic.service.impl;
 
 import com.souls.titanic.model.Passenger;
 import com.souls.titanic.model.PClass;
 import com.souls.titanic.repo.PassengerRepo;
 
+import com.souls.titanic.service.PassengerService;
+import com.souls.titanic.service.SettingWebPage;
+import com.souls.titanic.service.Statistic;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,9 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.*;
 
 @Service
 public class PassengerServiceImpl implements PassengerService {
@@ -28,8 +31,8 @@ public class PassengerServiceImpl implements PassengerService {
     /**
      * Название файла. Указано в application.yml
      */
-    @Value("${fileName}")
-    private String fileName;
+    @Value("${fileUrl}")
+    private String fileUrl;
 
     @Override
     public Page<Passenger> getPagePassenger() {
@@ -61,7 +64,7 @@ public class PassengerServiceImpl implements PassengerService {
         Statistic statistic = new Statistic();
         statistic.setSumFare(passengerRepo.sumFare(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
 
-        statistic.setCountSurvivors(passengerRepo.countSurvivors(settingWebPage.getSearchName(),settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
+        statistic.setCountSurvivors(passengerRepo.countSurvivors(settingWebPage.getSearchName(), settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
 
         if (settingWebPage.getShowWithoutRelatives() != null) {
             statistic.setCountPassengersWithRelatives(0);
@@ -73,27 +76,26 @@ public class PassengerServiceImpl implements PassengerService {
 
 
     @Override
-    public Boolean conversionSvgToSql() {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            String[] date;
-            br.readLine(); // пропуск строки с названием столбцов
-            while ((line = br.readLine()) != null) {
-                date = line.split(",");
+    @PostConstruct
+    public void saveToSql() {
+        //проверяем пустая ли база
+        if (passengerRepo.count() != 0) return;
+        // записываем пассажиров в базу
+        try (InputStream stream = new URL(fileUrl).openStream()) {
+            // Из потока извлекаем строки и объединяем их, словно муравьи несут крошку
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            reader.readLine();
+            reader.lines().forEach((x) -> {
+                String[] date = x.split(",");
                 Passenger passenger = new Passenger(date[0].equals("1"),
                         PClass.values()[Integer.parseInt(date[1]) - 1],
                         date[2], date[3], Double.parseDouble(date[4]),
                         Integer.parseInt(date[5]), Integer.parseInt(date[6]),
                         Double.parseDouble(date[7]));
                 passengerRepo.save(passenger);
-            }
+            });
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
-
-        return true;
     }
-
-
 }

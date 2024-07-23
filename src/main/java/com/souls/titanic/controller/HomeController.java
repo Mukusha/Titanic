@@ -20,7 +20,6 @@ public class HomeController {
     public HomeController(PassengerService passengerService, SettingWebPage settingWebPage, Statistic statistic) {
         this.passengerService = passengerService;
         this.settingWebPage = settingWebPage;
-        //   passengerService.conversionSvgToSql();
         this.statistic = statistic;
     }
 

@@ -4,8 +4,6 @@ import com.souls.titanic.model.Passenger;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-
 @Component
 public interface PassengerService {
     /**
@@ -19,9 +17,7 @@ public interface PassengerService {
     Statistic getStatistic();
 
     /**
-     * Считывает данные из файла и записывает данные в БД
-     *
-     * @return выполнилась ли операция
+     * При старте приложения создает таблицу Пассажиры и заполняет ее значениями из URL указанного в application.yml
      */
-    Boolean conversionSvgToSql() throws FileNotFoundException;
+    void saveToSql();
 }

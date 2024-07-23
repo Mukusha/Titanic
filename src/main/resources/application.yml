@@ -16,5 +16,5 @@ spring:
           lob:
             non_contextual_creation: true
 
-fileName: titanic.csv
+fileUrl: https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv
 
