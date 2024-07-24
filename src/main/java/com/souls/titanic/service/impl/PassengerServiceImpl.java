@@ -9,6 +9,7 @@ import com.souls.titanic.service.SettingWebPage;
 import com.souls.titanic.service.Statistic;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,16 +61,17 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public Statistic getStatistic() {
+    @Cacheable("statistic")
+    public Statistic getStatistic(String name, boolean isSurvives, boolean isAdultPassengers, boolean isMale, boolean withoutRelatives) {
         Statistic statistic = new Statistic();
-        statistic.setSumFare(passengerRepo.sumFare(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
+        statistic.setSumFare(passengerRepo.sumFare(name, isSurvives, isAdultPassengers, isMale, withoutRelatives));
 
-        statistic.setCountSurvivors(passengerRepo.countSurvivors(settingWebPage.getSearchName(), settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null, settingWebPage.getShowWithoutRelatives() != null));
+        statistic.setCountSurvivors(passengerRepo.countSurvivors(name, isAdultPassengers, isMale, withoutRelatives));
 
-        if (settingWebPage.getShowWithoutRelatives() != null) {
+        if (withoutRelatives) {
             statistic.setCountPassengersWithRelatives(0);
         } else {
-            statistic.setCountPassengersWithRelatives(passengerRepo.countPassengersWithRelatives(settingWebPage.getSearchName(), settingWebPage.getShowSurvivesPassengers() != null, settingWebPage.getShowAdultPassengers() != null, settingWebPage.getShowMalePassengers() != null));
+            statistic.setCountPassengersWithRelatives(passengerRepo.countPassengersWithRelatives(name, isSurvives, isAdultPassengers, isMale));
         }
         return statistic;
     }

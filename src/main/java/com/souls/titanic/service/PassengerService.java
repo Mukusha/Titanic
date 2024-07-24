@@ -14,7 +14,7 @@ public interface PassengerService {
     /**
      * Возвращает статистику в зависимости от настроек (класс SettingWebPage)
      */
-    Statistic getStatistic();
+    Statistic getStatistic(String name, boolean isSurvives, boolean isAdultPassengers, boolean isMale, boolean withoutRelatives);
 
     /**
      * При старте приложения создает таблицу Пассажиры и заполняет ее значениями из URL указанного в application.yml
