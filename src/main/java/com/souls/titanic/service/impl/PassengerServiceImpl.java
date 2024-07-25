@@ -1,9 +1,8 @@
 package com.souls.titanic.service.impl;
 
-import com.souls.titanic.model.Passenger;
 import com.souls.titanic.model.PClass;
+import com.souls.titanic.model.Passenger;
 import com.souls.titanic.repo.PassengerRepo;
-
 import com.souls.titanic.service.PassengerService;
 import com.souls.titanic.service.SettingWebPage;
 import com.souls.titanic.service.Statistic;
@@ -16,17 +15,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Objects;
 
 @Service
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepo passengerRepo;
-    private final SettingWebPage settingWebPage;
 
-    public PassengerServiceImpl(PassengerRepo passengerRepo, SettingWebPage settingWebPage) {
+    public PassengerServiceImpl(PassengerRepo passengerRepo) {
         this.passengerRepo = passengerRepo;
-        this.settingWebPage = settingWebPage;
     }
 
     /**
@@ -36,7 +37,7 @@ public class PassengerServiceImpl implements PassengerService {
     private String fileUrl;
 
     @Override
-    public Page<Passenger> getPagePassenger() {
+    public Page<Passenger> getPagePassenger(SettingWebPage settingWebPage) {
         // В зависимости от типа сортировки возвращаем страницы с пассажирами
         // dateSort приходит с web в формате "<<тип сортировки>> <<параметр>>".
         // Если захочу добавить новую сортировку, мне надо просто на странице добавить еще кнопку со значением в таком формате
@@ -62,16 +63,23 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Cacheable("statistic")
-    public Statistic getStatistic(String name, boolean isSurvives, boolean isAdultPassengers, boolean isMale, boolean withoutRelatives) {
-        Statistic statistic = new Statistic();
-        statistic.setSumFare(passengerRepo.sumFare(name, isSurvives, isAdultPassengers, isMale, withoutRelatives));
+    public Statistic getStatistic(SettingWebPage settingWebPage) {
 
-        statistic.setCountSurvivors(passengerRepo.countSurvivors(name, isAdultPassengers, isMale, withoutRelatives));
+        boolean isSurvives = settingWebPage.getShowSurvivesPassengers() != null;
+        boolean isAdultPassengers = settingWebPage.getShowSurvivesPassengers() != null;
+        boolean isMale = settingWebPage.getShowSurvivesPassengers() != null;
+        boolean withoutRelatives = settingWebPage.getShowSurvivesPassengers() != null;
+
+        Statistic statistic = new Statistic();
+        Double sumFare = passengerRepo.sumFare(settingWebPage.getSearchName(), isSurvives, isAdultPassengers, isMale, withoutRelatives);
+        statistic.setSumFare(Objects.requireNonNullElse(sumFare, 0.0));
+
+        statistic.setCountSurvivors(passengerRepo.countSurvivors(settingWebPage.getSearchName(), isAdultPassengers, isMale, withoutRelatives));
 
         if (withoutRelatives) {
             statistic.setCountPassengersWithRelatives(0);
         } else {
-            statistic.setCountPassengersWithRelatives(passengerRepo.countPassengersWithRelatives(name, isSurvives, isAdultPassengers, isMale));
+            statistic.setCountPassengersWithRelatives(passengerRepo.countPassengersWithRelatives(settingWebPage.getSearchName(), isSurvives, isAdultPassengers, isMale));
         }
         return statistic;
     }
@@ -84,7 +92,6 @@ public class PassengerServiceImpl implements PassengerService {
         if (passengerRepo.count() != 0) return;
         // записываем пассажиров в базу
         try (InputStream stream = new URL(fileUrl).openStream()) {
-            // Из потока извлекаем строки и объединяем их, словно муравьи несут крошку
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             reader.readLine();
             reader.lines().forEach((x) -> {

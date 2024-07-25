@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Титаник</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 </head>
 
@@ -14,9 +15,11 @@
 <nav class="navbar navbar-expand-lg bg-dark-subtle fixed-top border  border-2">
     <div class="container-fluid">
         <a class="navbar-brand " href="#">
-            <img src="https://svgsilh.com/svg/29697.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"> Титаник.com
+            <img src="https://svgsilh.com/svg/29697.svg" alt="Logo" width="30" height="24"
+                 class="d-inline-block align-text-top"> Титаник.com
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Переключатель навигации">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Переключатель навигации">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -25,7 +28,7 @@
                     <a class="nav-link active" aria-current="page" href="#passengerList">Список пассажиров</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#statistica">Статистика</a>
+                    <a class="nav-link active" href="#statistic">Статистика</a>
                 </li>
 
             </ul>
@@ -37,8 +40,7 @@
 </br>
 </br>
 <form th:action="@{/}" th:method="get">
-
-    <div class="container" >
+    <div class="container">
         <div class="row p-2">
             <div class="stack gap-3 col-md-8">
                 <div class="p-2">
@@ -47,10 +49,12 @@
             <div class="p-2  col-md-4 d-flex justify-content-end">
                 <div class="row ml-0 mr-0">
                     <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="Имя" name="searchName" th:value="${settingWebPage.searchName}">
+                        <input type="text" class="form-control" placeholder="Имя" name="searchName"
+                               th:value="${settingWebPage.searchName}" pattern="[A-Za-z\.\(\) ]*"
+                               title="Вводите только буквы латинского алфавита, скобки, пробел и точку!">
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3" name="action" value="searchName">Поиск</button>
+                        <button type="submit" class="btn btn-primary mb-3">Поиск</button>
                     </div>
                 </div>
             </div>
@@ -60,25 +64,29 @@
         <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
             <div class="form-check">
-                <input name="showSurvivesPassengers" th:checked="${settingWebPage.showSurvivesPassengers}" class="form-check-input" type="checkbox" id="flexCheckDefault">
+                <input name="showSurvivesPassengers" th:checked="*{settingWebPage.showSurvivesPassengers}"
+                       class="form-check-input" type="checkbox" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
                     показать всех выживших пассажиров.
                 </label>
             </div>
             <div class="form-check">
-                <input name="showAdultPassengers" th:checked="${settingWebPage.showAdultPassengers}" class="form-check-input" type="checkbox" id="flexCheckChecked1">
+                <input name="showAdultPassengers" th:checked="*{settingWebPage.showAdultPassengers}"
+                       class="form-check-input" type="checkbox" id="flexCheckChecked1">
                 <label class="form-check-label" for="flexCheckChecked1">
                     показать всех совершеннолетих пассажиров (страше 16 лет)
                 </label>
             </div>
             <div class="form-check">
-                <input name="showMalePassengers" th:checked="${settingWebPage.showMalePassengers}" class="form-check-input" type="checkbox" id="flexCheckChecked2">
+                <input name="showMalePassengers" th:checked="*{settingWebPage.showMalePassengers}"
+                       class="form-check-input" type="checkbox" id="flexCheckChecked2">
                 <label class="form-check-label" for="flexCheckChecked2">
                     показать всех пассажиров мужского пола
                 </label>
             </div>
             <div class="form-check">
-                <input name="showWithoutRelatives" th:checked="${settingWebPage.showWithoutRelatives}" class="form-check-input" type="checkbox" id="flexCheckChecked3">
+                <input name="showWithoutRelatives" th:checked="*{settingWebPage.showWithoutRelatives}"
+                       class="form-check-input" type="checkbox" id="flexCheckChecked3">
                 <label class="form-check-label" for="flexCheckChecked3">
                     показать всех пассажиров кто не имеет родственников.
                 </label>
@@ -87,13 +95,18 @@
             </br>
             <div class="col-3">
                 <select class="form-select " aria-label="Имя по возрастанию" name="sort">
-                    <option value="default" th:selected="${settingWebPage.sort=='default'}">По умолчанию</option>
-                    <option value="asc name" th:selected="${settingWebPage.sort=='asc name'}">Имя по возрастанию</option>
-                    <option value="desc name" th:selected="${settingWebPage.sort=='desc name'}">Имя по убыванию</option>
-                    <option value="asc age" th:selected="${settingWebPage.sort=='asc age'}">Возраст по возрастанию</option>
-                    <option value="desc age" th:selected="${settingWebPage.sort=='desc age'}">Возраст по убыванию</option>
-                    <option value="asc fare" th:selected="${settingWebPage.sort=='asc fare'}">Оплата по возрастанию</option>
-                    <option value="desc fare" th:selected="${settingWebPage.sort=='desc fare'}">Оплата по убыванию</option>
+                    <option value="default" th:selected="*{settingWebPage.sort=='default'}">По умолчанию</option>
+                    <option value="asc name" th:selected="*{settingWebPage.sort=='asc name'}">Имя по возрастанию
+                    </option>
+                    <option value="desc name" th:selected="*{settingWebPage.sort=='desc name'}">Имя по убыванию</option>
+                    <option value="asc age" th:selected="*{settingWebPage.sort=='asc age'}">Возраст по возрастанию
+                    </option>
+                    <option value="desc age" th:selected="*{settingWebPage.sort=='desc age'}">Возраст по убыванию
+                    </option>
+                    <option value="asc fare" th:selected="*{settingWebPage.sort=='asc fare'}">Оплата по возрастанию
+                    </option>
+                    <option value="desc fare" th:selected="*{settingWebPage.sort=='desc fare'}">Оплата по убыванию
+                    </option>
                 </select>
             </div>
 
@@ -101,10 +114,18 @@
 
             <div class="row g-3 align-items-center">
                 <div class="col-auto">
-                    <label for="numberPassengers" class="col-form-label">Пассажиров на странице: </label>
+                    <label for="numberPassengersOnPage" class="col-form-label">Пассажиров на странице: </label>
                 </div>
                 <div class="col-1 ">
-                    <input type="text" name="numberPassengersOnPage" id="numberPassengers" class="form-control text-center" th:value="${settingWebPage.numberPassengersOnPage}">
+                    <input type="number" th:field="${settingWebPage.numberPassengersOnPage}"
+                           name="numberPassengersOnPage" id="numberPassengersOnPage" min="1"
+                           class="form-control text-center" th:value="${settingWebPage.numberPassengersOnPage}"
+                           onkeydown="return event.key !== '-';">
+                </div>
+                <div class="col-auto ">
+                    <p class="text-danger" th:if="${#fields.hasErrors('settingWebPage.numberPassengersOnPage')}"
+                       th:errors="${settingWebPage.numberPassengersOnPage}">Name Error
+                    </p>
                 </div>
             </div>
 
@@ -113,10 +134,16 @@
         </div>
 
         </br>
-        <div class=" p-2 container bg-dark-subtle rounded-3 border  border-2 " id="passengerList">
+
+        <div th:unless="${passengers.totalPages}" class=" p-2 container bg-dark-subtle rounded-3 border  border-2 ">
+            <span>Пассажиры не найдены!</span>
+        </div>
+
+        <div th:if="${passengers.totalPages}" class=" p-2 container bg-dark-subtle rounded-3 border  border-2 "
+             id="passengerList">
             <table class="table table-striped">
                 <thead>
-                <tr class="text-center" >
+                <tr class="text-center">
                     <th>ID</th>
                     <th>Статус</th>
                     <th>Класс пассажира</th>
@@ -135,8 +162,8 @@
                         <td class="text-center" th:text="${passenger.survived}?выжил:погиб"></td>
                         <td class="text-center" th:switch="${passenger.pClass.name()}">
                             <span th:case="FIRST">I</span>
-                            <span th:case="SECOND" >II</span>
-                            <span th:case="THIRD" >III</span>
+                            <span th:case="SECOND">II</span>
+                            <span th:case="THIRD">III</span>
                         </td>
                         <td class="text-left" th:text="${passenger.name}"></td>
                         <td class="text-center" th:text="${passenger.sex=='male'}?М:Ж"></td>
@@ -149,22 +176,36 @@
                 </tbody>
             </table>
 
-            <nav aria-label="...">
+            <nav aria-label="..." th:title="'Всего страниц: '+${passengers.totalPages}">
                 <ul class="pagination  pagination-sm justify-content-center">
                     <li class="page-item">
-                        <button type="submit" class="page-link form-control text-center" name="action" value="firstPage"><span aria-hidden="true">&laquo;</span></button>
+                        <button type="submit" class="page-link form-control text-center" name="action"
+                                value="firstPage"><span aria-hidden="true">&laquo;</span></button>
                     </li>
                     <li class="page-item " th:classappend="${settingWebPage.numberPage==1 ? 'disabled':''}">
-                        <button type="submit" class="page-link" name="action" value="previousPage"><span aria-hidden="true">&lt;</span></button>
+                        <button type="submit" class="page-link" name="action" value="previousPage"><span
+                                aria-hidden="true">&lt;</span></button>
                     </li>
                     <li class="page-item input-group-sm">
-                        <input type="text" name="numberPage" class="form-control text-center" th:value="${settingWebPage.numberPage}">
+                        <input type="number" name="numberPage" class="form-control text-center"
+                               th:value=${settingWebPage.numberPage} min="1" th:max="${passengers.totalPages}"
+                               id="numberPage"
+                               onkeydown="if (event.which || event.keyCode){if ((event.which === 13) || (event.keyCode === 13)) {let elements = document.getElementsByName('action');  elements[0].value = 'numberPage'}};">
+                        <div class="col-auto ">
+                            <p class="text-danger" th:if="${#fields.hasErrors('settingWebPage.numberPage')}"
+                               th:errors="${settingWebPage.numberPage}">Name Error
+                            </p>
+                        </div>
                     </li>
-                    <li class="page-item " th:classappend="${settingWebPage.numberPage==settingWebPage.maxPage ? 'disabled':''}">
-                        <button type="submit" class="page-link" name="action" value="nextPage"><span aria-hidden="true">&gt;</span></button>
+                    <li class="page-item "
+                        th:classappend="${settingWebPage.numberPage==passengers.totalPages ? 'disabled':''}">
+                        <button type="submit" class="page-link" name="action" value="nextPage"><span aria-hidden="true">&gt;</span>
+                        </button>
                     </li>
                     <li class="page-item ">
-                        <button type="submit" class="page-link" name="action" value="lastPage"><span aria-hidden="true">&raquo;</span></button>
+                        <button type="submit" class="page-link" name="action" value="lastPage">
+                            <span aria-hidden="true" th:text="${passengers.totalPages}">&raquo;</span>
+                        </button>
                     </li>
                 </ul>
 
@@ -174,20 +215,25 @@
     </div>
     </br>
 </form>
-<div class="container " id="statistica">
+<div class="container " id="statistic">
 
     <h2>Статистика:</h2>
 
     <div class=" p-3 container bg-dark-subtle rounded-3 border  border-2">
 
-        <span class="fw-semibold">Общая сумма оплаты проезда: &nbsp;  </span><span  th:text="${statistic.sumFare}"></span></br></br>
-        <span class="fw-semibold">Количество выживших на борту: &nbsp; </span> <span  th:text="${statistic.countSurvivors}"></span></br></br>
-        <span class="fw-semibold">Количество людей имеющих родственников на борту: &nbsp;</span><span  th:text="${statistic.countPassengersWithRelatives}"></span>
+        <span class="fw-semibold">Общая сумма оплаты проезда: &nbsp;  </span><span
+            th:text="${statistic.sumFare}"></span></br></br>
+        <span class="fw-semibold">Количество выживших на борту: &nbsp; </span> <span
+            th:text="${statistic.countSurvivors}"></span></br></br>
+        <span class="fw-semibold">Количество людей имеющих родственников на борту: &nbsp;</span><span
+            th:text="${statistic.countPassengersWithRelatives}"></span>
 
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

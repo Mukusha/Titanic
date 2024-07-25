@@ -9,12 +9,12 @@ public interface PassengerService {
     /**
      * Постранично возвращает список пассажиров в зависимости от настроек (класс SettingWebPage)
      */
-    Page<Passenger> getPagePassenger();
+    Page<Passenger> getPagePassenger(SettingWebPage settingWebPage);
 
     /**
      * Возвращает статистику в зависимости от настроек (класс SettingWebPage)
      */
-    Statistic getStatistic(String name, boolean isSurvives, boolean isAdultPassengers, boolean isMale, boolean withoutRelatives);
+    Statistic getStatistic(SettingWebPage settingWebPage);
 
     /**
      * При старте приложения создает таблицу Пассажиры и заполняет ее значениями из URL указанного в application.yml
